@@ -46,7 +46,7 @@ export function Navbar({ wishlistCount, cartCount, user, onLogout }: NavbarProps
               `navbar__link ${isActive ? 'navbar__link--active' : ''}`
             }
           >
-            Favoritos
+            Wishlist
             {wishlistCount > 0 && (
               <span className="navbar__badge">{wishlistCount}</span>
             )}

@@ -1,6 +1,6 @@
-# 🛍️ FakeStore Wishlist — Um Guia Amigável
+# 🛍️ FakeStore — Um Guia Amigável
 
-Bem-vindo(a) ao projeto principal da nossa loja virtual FakeStore! Se você é um desenvolvedor Júnior chegando agora, você está no lugar certo.
+Bem-vindo(a) ao projeto principal da loja virtual FakeStore! 
 
 ## 🗺️ Visão Geral do Projeto
 

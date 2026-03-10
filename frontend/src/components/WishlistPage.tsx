@@ -45,7 +45,7 @@ export function WishlistPage({
     return (
       <div className="error-message">
         <span className="error-message__icon">⚠️</span>
-        <h3>Erro ao carregar favoritos</h3>
+        <h3>Erro ao carregar wishlist</h3>
         <p>{error}</p>
       </div>
     );
@@ -57,7 +57,7 @@ export function WishlistPage({
     <section className="wishlist-page">
       <div className="wishlist-page__header">
         <div>
-          <h1 className="wishlist-page__title">Meus Favoritos</h1>
+          <h1 className="wishlist-page__title">Minha Wishlist</h1>
           <p className="wishlist-page__subtitle">
             {items.length === 0
               ? 'Sua lista está vazia. Adicione produtos!'
@@ -69,7 +69,7 @@ export function WishlistPage({
       {items.length === 0 ? (
         <div className="wishlist-page__empty">
           <span className="wishlist-page__empty-icon">💫</span>
-          <h3>Nenhum item nos favoritos</h3>
+          <h3>Nenhum item na wishlist</h3>
           <p>Explore os produtos e adicione seus favoritos aqui!</p>
         </div>
       ) : (
@@ -98,7 +98,7 @@ export function WishlistPage({
                 {editingId === item.id ? (
                   <div className="wishlist-item__edit-form">
                     <div className="wishlist-item__field">
-                      <label htmlFor={`notes-${item.id}`}>Observações</label>
+                      <label htmlFor={`notes-${item.id}`}>Notas</label>
                       <textarea
                         id={`notes-${item.id}`}
                         value={editNotes}
