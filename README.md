@@ -111,8 +111,3 @@ Optou-se por focar no CI pelas seguintes razões:
 Portanto, a base para um CD (Continuous Deployment) automatizado já existe dentro do Actions do GitHub de forma latente, mas a decisão arquitetural foi parar a esteira assim que os robôs garantem a saúde do código!
 
 ---
-
-**Quer entender onde dar manutenção?**
-Temos um manual exclusivo só para você! Leia o arquivo **[DOCUMENTACAO_JUNIOR.md](./DOCUMENTACAO_JUNIOR.md)** que está na raiz do projeto para entender todos os arquivos de ponta a ponta. 
-
-Mãos à obra e divirta-se codando! 🚀
