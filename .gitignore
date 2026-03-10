@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.env
+dev.db
+*.db
+*.db-journal
+backend/dev.db
+backend/node_modules/
+backend/dist/
+frontend/node_modules/
+frontend/dist/
+.DS_Store
+Thumbs.db
