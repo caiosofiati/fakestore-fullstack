@@ -31,21 +31,24 @@ export class AuthService {
       // Autenticamos com sucesso na FakeStore.
       // Não precisamos do token deles, pois emitiremos o nosso próprio JWT seguro.
 
-      // Busca o perfil completo do usuário no nosso banco/API interna
-      const user = await this.usersService.findOne(username);
-      if (!user) {
+      // Busca o perfil completo do usuário na API externa e SINCRONIZA com o banco local
+      const externalUser = await this.usersService.findOne(username);
+      if (!externalUser) {
         throw new UnauthorizedException('Perfil de usuário não encontrado');
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, ...userWithoutPassword } = user as {
-        password?: string;
-        id?: number;
-        [key: string]: unknown;
-      };
+      // Sincroniza com o SQLite local para evitar erros de Foreign Key no Carrinho/Wishlist
+      const user = await this.usersService.upsertLocalUser(externalUser);
 
-      const role = userWithoutPassword.id === 1 ? 'ADMIN' : 'USER';
-      const payload = { sub: userWithoutPassword.id, username, role };
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password, ...userWithoutPassword } = user;
+
+      const role = userWithoutPassword.role;
+      const payload = {
+        sub: userWithoutPassword.id,
+        username: userWithoutPassword.username,
+        role,
+      };
 
       console.log(
         `✅ [AuthService] Login aceito pela API externa! Gerando JWT Local Seguro (Role: ${role}) para '${username}'...`,
@@ -61,7 +64,10 @@ export class AuthService {
           role,
         },
       };
-    } catch {
+    } catch (err) {
+      if (err instanceof UnauthorizedException) {
+        throw err;
+      }
       throw new UnauthorizedException('Credenciais inválidas na FakeStore API');
     }
   }
