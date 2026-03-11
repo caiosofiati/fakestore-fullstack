@@ -40,11 +40,25 @@ export class AuthController {
       unknown
     >;
     if (!user) throw new NotFoundException(`User ${id} not found`);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...res } = user as {
-      password?: string;
-      [key: string]: unknown;
+    const localUser = user as {
+      id: number;
+      email: string;
+      username: string;
+      firstname: string;
+      lastname: string;
+      role: string;
+      [key: string]: any;
     };
-    return res;
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, firstname, lastname, ...res } = localUser;
+
+    return {
+      ...res,
+      name: {
+        firstname,
+        lastname,
+      },
+    };
   }
 }

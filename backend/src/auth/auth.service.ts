@@ -60,7 +60,13 @@ export class AuthService {
       return {
         token: localToken,
         user: {
-          ...userWithoutPassword,
+          id: userWithoutPassword.id,
+          email: userWithoutPassword.email,
+          username: userWithoutPassword.username,
+          name: {
+            firstname: userWithoutPassword.firstname,
+            lastname: userWithoutPassword.lastname,
+          },
           role,
         },
       };

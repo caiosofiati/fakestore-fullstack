@@ -57,7 +57,12 @@ Enquanto consumimos os produtos de uma API externa base, temos o nosso próprio 
 
 Para a loja ganhar vida, você precisa ligar o **Frontend** e o **Backend** ao mesmo tempo (cada um em uma telinha separada do terminal do VS Code).
 
-### Passo 1: Ligando o Motor (Backend)
+### Passo 1: Configuração de Ambiente (.env)
+Tanto no `frontend/` quanto no `backend/`, você encontrará um arquivo chamado `.env.example`.
+1. Faça uma cópia deste arquivo e renomeie para `.env`.
+2. O Backend já vem pré-configurado para usar o SQLite localmente, então você não precisa mudar nada para testar!
+
+### Passo 2: Ligando o Motor (Backend)
 Abra um terminal, acesse a pasta do backend e rode os comandos:
 ```bash
 cd backend
@@ -67,17 +72,13 @@ npx prisma generate                 # Isso gera os tipos do Prisma Client
 npm run start:dev                   # Isso inicia o servidor na porta 3000
 ```
 
-### Passo 2: Ligando a Tela (Frontend)
+### Passo 3: Ligando a Tela (Frontend)
 Abra um **SEGUNDO** terminal (deixe o primeiro rodando em paz), acesse a pasta do frontend e rode:
 ```bash
 cd frontend
 npm install
 npm run dev                         # Isso abre a tela do site no seu navegador (porta 5173)
 ```
-### Passo 3: Configuração de Ambiente (.env)
-Tanto no `frontend/` quanto no `backend/`, você encontrará um arquivo chamado `.env.example`.
-1. Faça uma cópia deste arquivo e renomeie para `.env`.
-2. O Backend já vem pré-configurado para usar o SQLite localmente, então você não precisa mudar nada para testar!
 
 Pronto! Abra `http://localhost:5173` no seu navegador para ver a loja em ação.
 
