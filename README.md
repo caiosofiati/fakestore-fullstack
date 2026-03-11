@@ -48,6 +48,9 @@ Enquanto consumimos os produtos de uma API externa base, temos o nosso próprio 
 2. **Arquitetura Modular (NestJS)**: Utilizamos a estrutura opinionada do NestJS com injeção de dependências, uso pesado de Decorators e *Guards* para proteção de rotas (Auth) isolando regras de negócio em *Services* limpos.
 3. **SQLite (Prisma ORM)**: Optamos por SQLite local em vez de algo como PostgreSQL pensando na **Developer Experience (DX)** e validação. Elimina a necessidade de quem estiver avaliando o projeto precisar subir containers Docker ou instanciar bancos virtuais, mantendo mesmo assim uma estrutura robusta de relacionamentos mapeados via Prisma ORM.
 
+### Arquitetura de Cache na Memória para a FakeStore API
+> **Nota de Arquitetura:** Como a FakeStore API retorna sucesso (200) para operações de escrita (POST, PUT, DELETE) mas **não persiste os dados em seu banco**, implementamos um padrão de Cache e Mock em Memória no arquivo `src/products/products.service.ts`. Isso permite que a aplicação continue consumindo a API real como fonte primária e, simultaneamente, ofereça uma experiência de CRUD 100% funcional para o usuário final durante as operações locais, já que os dados alterados persistem na memória do Node.js.
+
 ---
 
 ## ⚡ Como rodar a aplicação na sua máquina?
@@ -107,8 +110,6 @@ Se preferir digitar manualmente:
 ---
 
 ## 🛠️ Por que CI e não CD?
-
-Como este é um projeto de demonstração para vagas de Fullstack, você deve ter notado que temos um pipeline configurado usando **GitHub Actions** (`.github/workflows/ci.yml`), focado inteiramente em **Integração Contínua (CI)**. 
 
 Optou-se por focar no CI pelas seguintes razões:
 1. **Foco na Estabilidade do Código**: O CI garante que cada alteração no NestJS (Backend) ou React (Frontend) passe por linter, build rigoroso e pela bateria de **Testes Unitários (Jest)**. O código só é mergeado se tiver 100% de integridade.
