@@ -27,19 +27,26 @@ Este repositório contém uma aplicação **Fullstack** (Frontend + Backend) com
 
 ---
 
-## 🏗️ Como as peças se encaixam? (A Arquitetura)
+## 🧠 Decisões de Arquitetura, Regras de Negócio e API Externa
 
-Nosso sistema funciona num formato chamado de **Proxy**.
-Pense no **Frontend (React)** como um cliente em um restaurante, e o **Backend (NestJS)** como o garçom.
+### 🌐 A API Externa (FakeStore API)
+Para o catálogo de produtos e dados iniciais, optamos por consumir a **[FakeStore API](https://fakestoreapi.com/)**. Ela fornece dados perfeitamente estruturados para simular um e-commerce. O detalhe arquitetural principal é: nosso Frontend **não** consome essa API diretamente. Nosso Backend (NestJS) atua num formato de **Proxy / BFF (Backend For Frontend)**. 
 
+Pense no **Frontend (React)** como um cliente em um restaurante, e o **Backend (NestJS)** como o garçom:
 1. O React pede: *"Garçom, me traga a lista de produtos!"*
-2. O NestJS vai até a cozinha (a internet, na `https://fakestoreapi.com/products`), pega a bandeja de produtos, e entrega para o React.
+2. O NestJS vai até a cozinha (a internet, na FakeStore), pega a bandeja, junta aos processos internos, e entrega pronta para o React.
 
-### E o Banco de Dados?
-Nós **NÃO** salvamos os produtos no nosso banco de dados. Nós usamos o banco de dados (um arquivo levinho chamado `dev.db` que roda em SQLite) **apenas** para salvar as escolhas pessoais dos nossos clientes logados:
-- Itens salvos no Carrinho (Cart).
-- Produtos marcados como Favoritos (Wishlist).
-- Tabela de Usuários cadastrados e Pedidos (Orders) finalizados.
+### 💼 Regras de Negócio do nosso CRUD
+Enquanto consumimos os produtos de uma API externa base, temos o nosso próprio banco de dados local (um arquivo `dev.db` em SQLite via Prisma ORM) para gerenciar o CRUD e as regras da jornada do usuário que a FakeStore não suporta nativamente:
+- **CRUD e Perfis de Usuários**: Sistema de registro e autênticação própria com senhas criptografadas (Bcrypt). Existem permissões de `USER` e `ADMIN`. O login gera um JWT validado via **Passport.js**.
+- **Carrinho (Cart) e Wishlist**: Operações de Carrinho (adicionar, remover, mudar quantidade) e Favoritos exigem autenticação (bloqueadas pela *JWT Auth Guard*) e persistem os itens atrelados ao ID do usuário no banco local.
+- **Gestão Híbrida de Produtos**: A FakeStore fornece a vitrine principal, mas o painel administrativo (restrito a `ADMIN`) fornece uma interface de CRUD unificada para gestão.
+- **Checkout (Orders)**: Finalizar a compra varre o carrinho ativo do usuário, consolida um evento e salva as informações como Histórico de Pedidos (`Orders`), em seguida limpa o carrinho para a próxima compra.
+
+### 🏗️ Decisões de Arquitetura
+1. **Padrão Proxy / Intermediário Seguro**: Evita a exposição de lógicas diretas no Client-side. O NestJS concentra a responsabilidade de mesclar dados da API externa com as preferências privadas do usuário vindas do nosso banco, evitando vazamento de dados.
+2. **Arquitetura Modular (NestJS)**: Utilizamos a estrutura opinionada do NestJS com injeção de dependências, uso pesado de Decorators e *Guards* para proteção de rotas (Auth) isolando regras de negócio em *Services* limpos.
+3. **SQLite (Prisma ORM)**: Optamos por SQLite local em vez de algo como PostgreSQL pensando na **Developer Experience (DX)** e validação. Elimina a necessidade de quem estiver avaliando o projeto precisar subir containers Docker ou instanciar bancos virtuais, mantendo mesmo assim uma estrutura robusta de relacionamentos mapeados via Prisma ORM.
 
 ---
 
