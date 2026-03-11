@@ -35,9 +35,7 @@ export class UsersService {
         `📡 [UsersService] Consultando lista de usuários na FakeStore API para encontrar '${username}'...`,
       );
       const response = await firstValueFrom(
-        this.httpService.get<FakeStoreUser[]>(
-          'https://fakestoreapi.com/users',
-        ),
+        this.httpService.get<FakeStoreUser[]>('https://fakestoreapi.com/users'),
       );
       const user = response.data.find((u) => u.username === username);
       if (!user) return null;
@@ -77,10 +75,12 @@ export class UsersService {
         update: userData,
         create: userData,
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
       console.error(
         `❌ [UsersService] Falha ao sincronizar usuário local:`,
-        error.message || error,
+        errorMessage,
       );
       throw error;
     }
