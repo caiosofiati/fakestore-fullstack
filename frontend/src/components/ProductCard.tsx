@@ -24,11 +24,25 @@ export function ProductCard({
     "women's clothing": 'Moda Feminina',
   };
 
+  const getImageUrl = (url: string) => {
+    if (!url) return '';
+    
+    // Se a imagem já vier com a URL completa do backend, retorna ela mesma
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+    
+    // Se for um caminho relativo, anexa o servidor backend
+    return url.startsWith('/') 
+      ? `http://localhost:3000${url}` 
+      : `http://localhost:3000/${url}`;
+  };
+
   return (
     <div className="product-card" id={`product-${product.id}`}>
       <div className="product-card__image-wrapper">
         <img
-          src={product.image}
+          src={getImageUrl(product.image)}
           alt={product.title}
           className="product-card__image"
           loading="lazy"

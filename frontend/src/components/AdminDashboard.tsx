@@ -11,6 +11,16 @@ export function AdminDashboard() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const getImageUrl = (url: string) => {
+    if (!url) return '';
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+    return url.startsWith('/') 
+      ? `http://localhost:3000${url}` 
+      : `http://localhost:3000/${url}`;
+  };
+
   const [editingId, setEditingId] = useState<number | null>(null);
   const [formData, setFormData] = useState({
     title: '',
@@ -221,7 +231,7 @@ export function AdminDashboard() {
               <label>Imagem do Produto</label>
               <div className="image-upload-wrapper">
                 {formData.image && (
-                  <img src={formData.image} alt="Preview" className="image-preview" />
+                  <img src={getImageUrl(formData.image)} alt="Preview" className="image-preview" />
                 )}
                 <div className="image-upload-controls">
                   <input
@@ -284,7 +294,7 @@ export function AdminDashboard() {
                       <span className="product-id-badge">#{p.id}</span>
                     </td>
                     <td data-label="Capa">
-                      <img src={p.image} alt={p.title} className="admin-product-img" loading="lazy" />
+                      <img src={getImageUrl(p.image)} alt={p.title} className="admin-product-img" loading="lazy" />
                     </td>
                     <td data-label="Produto" className="product-title-cell" title={p.title}>{p.title}</td>
                     <td data-label="Categoria">

@@ -19,6 +19,9 @@ Dentro da pasta `src/prisma`, temos os arquivos do **Prisma ORM**.
 Sabe aqueles momentos em que não queremos usar a `FakeStore API` para salvar coisas pessoais dos nossos usuários (como senhas, itens do Carrinho e Favoritos)? É pra isso que o Prisma serve. 
 Ele lê o arquivo `schema.prisma` e cria uma tabela real, minúscula e veloz no arquivo `dev.db` (nosso mini banco de dados SQLite).
 
+### Arquitetura de Cache na Memória para a FakeStore API
+> **Nota de Arquitetura:** Como a FakeStore API retorna sucesso (200) para operações de escrita (POST, PUT, DELETE) mas **não persiste os dados em seu banco**, implementamos um padrão de Cache e Mock em Memória no arquivo `src/products/products.service.ts`. Isso permite que a aplicação continue consumindo a API real como fonte primária e, simultaneamente, ofereça uma experiência de CRUD 100% funcional para o usuário final durante as operações locais, já que os dados alterados persistem na memória do Node.js.
+
 ---
 
 ## 🏃‍♂️ Passo a passo para ligar o Motor (Rodar o Backend)

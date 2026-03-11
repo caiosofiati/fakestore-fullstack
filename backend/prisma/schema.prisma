@@ -37,10 +37,6 @@ model Product {
   category    String
   image       String
   
-  wishlistItems WishlistItem[]
-  cartItems     CartItem[]
-  orderItems    OrderItem[]
-  
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -58,7 +54,6 @@ model WishlistItem {
   updatedAt DateTime @updatedAt
 
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 model CartItem {
@@ -73,7 +68,6 @@ model CartItem {
   updatedAt DateTime @updatedAt
 
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 model Order {
@@ -97,5 +91,4 @@ model OrderItem {
   quantity  Int
   
   order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }

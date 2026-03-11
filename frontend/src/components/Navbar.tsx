@@ -82,12 +82,17 @@ export function Navbar({ wishlistCount, cartCount, user, onLogout }: NavbarProps
           <div className="navbar__auth">
             {user ? (
               <div className="navbar__user">
-                <div className="navbar__avatar">
-                  {user.firstname?.charAt(0).toUpperCase()}
-                </div>
-                <span className="navbar__username">
-                  {user.firstname}
-                </span>
+                <NavLink to="/login" className="navbar__user-info">
+                  <div className="navbar__avatar">
+                    {user.name?.firstname?.charAt(0).toUpperCase()}
+                  </div>
+                  <span className="navbar__username">
+                    {user.name?.firstname
+                      ? user.name.firstname.charAt(0).toUpperCase() +
+                        user.name.firstname.slice(1).toLowerCase()
+                      : ''}
+                  </span>
+                </NavLink>
                 <button className="navbar__logout" onClick={onLogout} title="Sair">
                   ↪
                 </button>

@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { ProductList } from './components/ProductList';
 import { WishlistPage } from './components/WishlistPage';
@@ -24,7 +24,8 @@ interface ToastState {
 
 function AppContent() {
   const navigate = useNavigate();
-  const { products, loading: productsLoading, error: productsError } = useProducts();
+  const location = useLocation();
+  const { products, loading: productsLoading, error: productsError, refetch: refetchProducts } = useProducts();
   const {
     items: wishlistItems,
     loading: wishlistLoading,
@@ -58,6 +59,14 @@ function AppContent() {
     const timer = setTimeout(() => setToast(null), 3000);
     return () => clearTimeout(timer);
   }, [toast]);
+
+  // Sincroniza o estado Global dos produtos sempre que o usuário voltar para a Home
+  // Isso garante que se ele adicionou algo no AdminDashboard, a Home veja imediatamente
+  useEffect(() => {
+    if (location.pathname === '/') {
+      refetchProducts();
+    }
+  }, [location.pathname, refetchProducts]);
 
   const showToast = useCallback(
     (message: string, type: 'success' | 'error' | 'info') => {
@@ -194,15 +203,18 @@ function AppContent() {
                   <div className="login-container">
                     <div className="login-header">
                       <span className="login-icon">👋</span>
-                      <h1>Olá, {user?.firstname}!</h1>
+                      <h1>Olá, {user?.name?.firstname ? user.name.firstname.charAt(0).toUpperCase() + user.name.firstname.slice(1).toLowerCase() : ''}!</h1>
                       <p>Você já está logado.</p>
                     </div>
                     <div className="user-profile-card">
                       <div className="profile-avatar">
-                        {user?.firstname?.charAt(0).toUpperCase()}
-                        {user?.lastname?.charAt(0).toUpperCase()}
+                        {user?.name?.firstname?.charAt(0).toUpperCase()}
+                        {user?.name?.lastname?.charAt(0).toUpperCase()}
                       </div>
-                      <h2>{user?.firstname} {user?.lastname}</h2>
+                      <h2>
+                        {user?.name?.firstname ? user.name.firstname.charAt(0).toUpperCase() + user.name.firstname.slice(1).toLowerCase() : ''}{' '}
+                        {user?.name?.lastname ? user.name.lastname.charAt(0).toUpperCase() + user.name.lastname.slice(1).toLowerCase() : ''}
+                      </h2>
                       <p className="profile-email">{user?.email}</p>
                       <p className="profile-username">@{user?.username}</p>
                       <div className="profile-details">
