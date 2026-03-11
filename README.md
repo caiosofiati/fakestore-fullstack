@@ -63,6 +63,7 @@ Abra um terminal, acesse a pasta do backend e rode os comandos:
 cd backend
 npm install
 npx prisma migrate dev --name init  # Isso cria a tabela do banco de dados na 1ª vez
+npx prisma generate                 # Isso gera os tipos do Prisma Client
 npm run start:dev                   # Isso inicia o servidor na porta 3000
 ```
 
