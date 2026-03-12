@@ -84,4 +84,43 @@ describe('ProductsService', () => {
       await expect(service.findOne(999)).rejects.toThrow(HttpException);
     });
   });
+
+  describe('create', () => {
+    it('should create a new product with an incremental ID', async () => {
+      const existingProductsResponse = {
+        data: mockProducts,
+        status: 200,
+        statusText: 'OK',
+        headers: {},
+        config: { headers: new AxiosHeaders() },
+      } as unknown as AxiosResponse<any>;
+
+      const createResponse = {
+        data: { id: 21 }, // FakeStore always returns 21
+        status: 200,
+        statusText: 'OK',
+        headers: {},
+        config: { headers: new AxiosHeaders() },
+      } as unknown as AxiosResponse<any>;
+
+      jest
+        .spyOn(httpService, 'get')
+        .mockReturnValueOnce(of(existingProductsResponse));
+      jest.spyOn(httpService, 'post').mockReturnValueOnce(of(createResponse));
+
+      const newProductData = {
+        title: 'New Product',
+        price: 19.99,
+        description: 'New Description',
+        category: 'new',
+        image: 'https://example.com/new.png',
+      };
+
+      const result = await service.create(newProductData);
+
+      // mockProducts has max id: 1, so new product should have id: 2
+      expect(result.id).toBe(2);
+      expect(result.title).toBe(newProductData.title);
+    });
+  });
 });

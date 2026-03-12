@@ -111,7 +111,12 @@ export class ProductsService {
       );
 
       // A FakeStore API sempre retorna id: 21 no POST. Criamos um nosso para evitar colisão na memória:
-      const newProduct: Product = { ...data, id: Date.now() };
+      const allProducts = await this.findAll();
+      const maxId = allProducts.reduce(
+        (max, p) => (p.id > max ? p.id : max),
+        0,
+      );
+      const newProduct: Product = { ...data, id: maxId + 1 };
       this.memoryCache.set(newProduct.id, newProduct);
       return newProduct;
     } catch {

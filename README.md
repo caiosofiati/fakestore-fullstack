@@ -11,7 +11,7 @@ Este repositório contém uma aplicação **Fullstack** (Frontend + Backend) com
 - **Frontend**: [React](https://reactjs.org/) + [Vite](https://vitejs.dev/) + [TypeScript](https://www.typescriptlang.org/)
 - **Backend**: [NestJS](https://nestjs.com/) (Node.js) + [TypeScript](https://www.typescriptlang.org/)
 - **Banco de Dados**: [SQLite](https://www.sqlite.org/) via [Prisma ORM](https://www.prisma.io/)
-- **Autenticação**: [JWT (JSON Web Token)](https://jwt.io/) + [Passport.js](http://www.passportjs.org/)
+- **Autenticação**: [JWT (JSON Web Token)](https://jwt.io/)
 - **Testes**: [Jest](https://jestjs.io/)
 - **CI**: [GitHub Actions](https://github.com/features/actions)
 
@@ -38,7 +38,7 @@ Pense no **Frontend (React)** como um cliente em um restaurante, e o **Backend (
 
 ### 💼 Regras de Negócio do nosso CRUD
 Enquanto consumimos os produtos de uma API externa base, temos o nosso próprio banco de dados local (um arquivo `dev.db` em SQLite via Prisma ORM) para gerenciar o CRUD e as regras da jornada do usuário que a FakeStore não suporta nativamente:
-- **CRUD e Perfis de Usuários**: Sistema de registro e autênticação própria com senhas criptografadas (Bcrypt). Existem permissões de `USER` e `ADMIN`. O login gera um JWT validado via **Passport.js**.
+- **CRUD e Perfis de Usuários**: Sistema de registro e autênticação própria com senhas. Existem permissões de `USER` e `ADMIN`. O login gera um JWT validado.
 - **Carrinho (Cart) e Wishlist**: Operações de Carrinho (adicionar, remover, mudar quantidade) e Favoritos exigem autenticação (bloqueadas pela *JWT Auth Guard*) e persistem os itens atrelados ao ID do usuário no banco local.
 - **Gestão Híbrida de Produtos**: A FakeStore fornece a vitrine principal, mas o painel administrativo (restrito a `ADMIN`) fornece uma interface de CRUD unificada para gestão.
 - **Checkout (Orders)**: Finalizar a compra varre o carrinho ativo do usuário, consolida um evento e salva as informações como Histórico de Pedidos (`Orders`), em seguida limpa o carrinho para a próxima compra.

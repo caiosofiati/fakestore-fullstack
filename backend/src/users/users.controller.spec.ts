@@ -15,7 +15,7 @@ describe('UsersController', () => {
         UsersService,
         {
           provide: PrismaService,
-          useValue: {}, 
+          useValue: {},
         },
       ],
     }).compile();
