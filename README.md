@@ -83,7 +83,7 @@ Abra um **SEGUNDO** terminal (deixe o primeiro rodando em paz), acesse a pasta d
 ```bash
 cd frontend
 npm install
-npm run dev                         # Isso abre a tela do site no seu navegador (porta 5173)
+npm run dev   # Isso abre a tela do site no seu navegador (porta 5173)
 ```
 
 Pronto! Abra `http://localhost:5173` no seu navegador para ver a loja em ação.
