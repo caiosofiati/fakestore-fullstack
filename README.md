@@ -70,6 +70,12 @@ npm install
 npx prisma migrate dev --name init  # Isso cria a tabela do banco de dados na 1ª vez
 npx prisma generate                 # Isso gera os tipos do Prisma Client
 npm run start:dev                   # Isso inicia o servidor na porta 3000
+
+```
+Voce também pode visualizar o banco de dados localmente com:
+
+```bash
+npx prisma studio
 ```
 
 ### Passo 3: Ligando a Tela (Frontend)
